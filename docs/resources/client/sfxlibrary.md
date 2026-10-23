@@ -4,10 +4,10 @@ The SFX Library is stored in your save directory as `sfxlibrary.dat`. To learn h
 
 To decode sfxlibrary.dat, you need to [Base64](/topics/encryption/base64.md) URL-Safe decode it and [Zlib](/topics/encryption/zip.md) inflate it.
 
-The SFX library is split into 2 parts:
+The SFX library is split into 3 parts:
 
 ```
-{files}|{credits}
+{files}|{credits}|{changelog}
 ```
 
 ## Files & folders
@@ -40,3 +40,13 @@ Example (SFX library version **95**):
 ```
 Epic Stock Media,https://epicstockmedia.com;Cyberwave Orchestra,https://cyberwaveorchestra.com;Fusehive,http://fusehive.com;SoundMorph,https://www.soundmorph.com;Stormwave Audio,https://stormwave-audio.com;David Dumais,https://www.daviddumaisaudio.com;Sharks,https://www.sharkstunes.com;
 ```
+
+## Changelog
+
+This is a base64 encoded string listing all sfx library changelogs, when decoded each entry is separated by `$` in the following format:
+
+`{version},{timestamp},{highest_sfx_id}:{changes}`
+
+Changes are encoded in the following format:
+
+`{sfx_id}~{change_count};{sfx_id}~{change_count}...`
