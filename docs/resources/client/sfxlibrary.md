@@ -49,4 +49,6 @@ This is a base64 encoded string listing all sfx library changelogs, when decoded
 
 Changes are encoded in the following format:
 
-`{sfx_id}~{change_count};{sfx_id}~{change_count}...`
+`{path}~{change_count};{path}~{change_count}...`
+
+Where path is the updated sfx folder's path string.
