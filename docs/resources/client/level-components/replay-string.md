@@ -11,7 +11,8 @@ Currently, it is only used for local levels, with it being stored on the client 
 It is separated into 2 sections with a `#` character: the inputs and the metadata
 
 ## Inputs
-The inputs are a list of click/release actions, separated by `;`. 
+
+The inputs are a list of click/release actions, separated by `;`.
 
 Each input has a half-step value, which is the amount of 240 TPS half-steps (or 480 TPS steps) that have passed since any previous input. The number is negative if the input is being released.
 
@@ -21,13 +22,20 @@ Every replay string starts with either a `-0` or `0`, which indicates if the pla
 
 All input types other than P1 jump include a `,` after the value and the ID of the input being done.
 
-| Key | Name                
-|-----|---------------------|
-| 2   | P1 Left             |
-| 3   | P1 Right            |
-| 6   | P2 Jump             | 
-| 7   | P2 Left             | 
-| 8   | P2 Right            | 
+| Key | Name               | Note                               |
+| --- | ------------------ | ---------------------------------- |
+| 0   | P1 Jump            |                                    |
+| 2   | P1 Left            |                                    |
+| 3   | P1 Right           |                                    |
+| 4   | P1 Action 4        | unused                             |
+| 5   | P1 Action 5        | unused                             |
+| 6   | P2 Jump            |                                    |
+| 7   | P2 Left            |                                    |
+| 8   | P2 Right           |                                    |
+| 9   | P2 Action 4        | unused                             |
+| 10  | P2 Action 5        | unused                             |
+| 98  | Checkpoint Load    | when loaded from a platformer save |
+| 99  | Checkpoint Respawn | when respawning from a checkpoint  |
 
 Here are some input examples:
 
@@ -36,38 +44,72 @@ Here are some input examples:
 - `340,7` - P2 left pressed down 340 half-steps after the previous input
 - `-60,3` - P1 right released 60 half-steps after the previous input
 
+Actions can store optional metadata, the action key and the metadata are separated by `:` when metadata is present. Currently only checkpoints store metadata.
+
 ## Checkpoint Data
-TODO
+
+Checkpoint actions (`98` and `99`) store their metadata as a list of key/value pairs separated by `,`, with a trailing `,`.
+
+`-step,99:1,seed,2,id,3,attempt,4,ticks,5,clicks,6,points,7,time,8,itemPersData,`
+
+Unlike other inputs, the step value of a checkpoint action is the current half-step when the checkpoint is activated, rather than the amount since the previous input, the inputs after checkpont count from that step. Checkpoint actions are always written as released, so the value starts with a `-`.
+
+| Key | Name           | Type                                  | Description                                                                                |
+| --- | -------------- | ------------------------------------- | ------------------------------------------------------------------------------------------ |
+| 1   | Random Seed    | **integer**                           | The seed used for random triggers on the attempt that started from this checkpoint         |
+| 2   | Checkpoint ID  | **integer**                           | Counter that increases with every checkpoint action. Ignored on load, a new ID is assigned |
+| 3   | Attempt        | **integer**                           | The attempt number shown in the "Attempt" label                                            |
+| 4   | Ticks          | **integer**                           | Half-steps played so far, increases by 2 every step                                        |
+| 5   | Clicks         | **integer**                           | Button presses so far                                                                      |
+| 6   | Points         | **integer**                           | Points collected so far                                                                    |
+| 7   | Time           | **integer**                           | Time played so far in seconds, multiplied by `100000` and rounded                          |
+| 8   | Item Pers Data | **[Item Pers Data](#item-pers-data)** | The state of persistent items and timers at the respawn                                    |
+
+Ticks, clicks and time are only reset when the level is restarted from the beginning, so they count the whole run across respawns.
+
+When the player respawns from a checkpoint, every input recorded after the checkpoint's step is removed before the `99` action is added, so the replay only contains the inputs of the path that continued. Inputs before the last `98` action are never removed.
 
 ## Metadata
+
 The metadata is comparatively simple. It's a list of 6 values separated by `,`. The values are:
 
-`randomSeed,attempts,gameVersion,binaryVersion,unknown,itemPersData`
+`randomSeed,attempts,gameVersion,binaryVersion,levelVersion,itemPersData`
 
 - Random Seed is the seed used for random triggers on the attempt of the replay.
-- Attempts is NOT the total amount of attempts, just the amount of attempts the replay took
+- Attempts is NOT the total amount of attempts, just the amount of attempts the replay took.
 - gameVersion and binaryVersion are the same as what the game sends to the servers. Currently `22` and `51` respectively.
-- The next value is unknown and seems to always be 1
-- The Item Pers data stores information about item and timer IDs that have been made persistent with the Item Pers trigger
+- levelVersion is the level's version at the time of the replay.
+- The itemPersData stores information about item and timer IDs that have been made persistent with the Item Pers trigger.
 
 ## Item Pers Data
+
 The Item Pers data is formatted as follows:
 
-`item_id|item_value|item_id|item_value...@timer_id|timer_data|timer_id|timer_data...|`
+`itemID|itemValue|itemID|itemValue...@timerID|timerData|timerID|timerData...|`
 
 These values represent the state of persistent item IDs and triggers at the start of the winning replay attempt.
 
-`item_id` and `item_value` are all the item IDs that are persistent and their value.
+`itemID` and `itemValue` are all the item IDs that are persistent and their value.
 
-`timer_id` and `timer_data` is the same for timers, but `timer_data` stores more than just the timer value as it contains a bunch of timer settings, separated by `&`. The values are:
+`timerID` and `timerData` is the same for timers, but `timerData` stores more than just the timer value as it contains a bunch of timer settings, separated by `&`. The values are:
 
-`timer_id&timer_value&running&time_mod&ignoreTimewarp&stopTime&stopTimeEnabled&targetGroupID&unk&unk&unk&`
+`timerID&timerValue&running&timeMod&ignoreTimewarp&stopTime&stopTimeEnabled&targetGroupID&runtimeID&controlID&paused&remaps`
 
-- `timer_id` is the timer ID
-- `timer_value` is the value the timer is at
+- `timerID` is the timer ID
+- `timerValue` is the value the timer is at
 - `running` is 0 if the timer is paused, 1 otherwise
-- `time_mod` is the value the time is multipled by (the TimeMod value in the Time trigger)
+- `timeMod` is the value the time is multipled by (the TimeMod value in the Time trigger)
 - `ignoreTimewarp` is 1 if Ignore TimeWarp is enabled, 0 otherwise
 - `stopTime` is the value at which the timer will stop
 - `stopTimeEnabled` is 1 if the Stop Time is enabled, 0 otherwise
 - `targetGroupID` is the group ID that is set to spawn when the timer hits StopTime
+- `runtimeID` is the runtime ID of the trigger that initialized the timer
+- `controlID` is the timer's control ID
+- `paused` whether the timer is paused by a Stop trigger
+- `remaps` is the timer's serialized remap chain
+
+`remaps` have the following format:
+
+`remapID_remapID_...remapID_-triggerRuntimeID`
+
+On level load, spawn remaps are converted into a dictionary and added to a global array, its position in the array is then saved in a field on the spawn trigger as `remapID`. When a trigger spawns a group the remap chain stores it's remap index if present and it's `triggerRuntimeID` if it's the first `remapID` added.
