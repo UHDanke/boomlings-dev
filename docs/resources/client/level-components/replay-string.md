@@ -113,6 +113,6 @@ Due to a bug, if the level has no persistent items, `persTimers` will not be pre
 
 `remaps` have the following format: `remapID_remapID_...remapID_-triggerRuntimeID`.
 
-On level load, spawn remaps are converted into a dictionary and added to a global array, its position in the array is then saved in a field on the spawn trigger as `remapID`. When a trigger spawns a group the remap chain stores it's remap index if present and it's `triggerRuntimeID` if it's the first `remapID` added.
+On level load, every spawn trigger's set of remaps is added to a global array. The position of a trigger's remap set in that array is then saved in a field on this spawn trigger as `remapID`. When a spawn trigger spawns a group, it applies remaps in reverse activation order. That's the order of the chain of `remapID`s for the trigger spawning the time trigger, and this chain becomes the value of `remaps` mentioned above. The `triggerRuntimeID` at the end is the internal runtime ID of the last trigger in `remaps` (first one in the activation chain).
 
 Item Pers data string is empty if both parts would be empty.
