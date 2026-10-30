@@ -81,15 +81,20 @@ The replay metadata is comparatively simple. It's a list of 6 values separated b
 
 ## Item Pers Data
 
-The Item Pers data is formatted as follows:
+Item Pers data represents the state of persistent items and triggers at the start of the replay (in replay string metadata) or at a respawn (in action 98/99 metadata).
 
-`itemID|itemValue|itemID|itemValue...@timerID|timerData|timerID|timerData...|`
+The Item Pers data is formatted as `{persItems}@{persTimers}` where both parts are optional dictionaries:
 
-These values represent the state of persistent item IDs and triggers at the start of the winning replay attempt.
+`persItems`: `itemID|itemValue|itemID|itemValue...`\
+`persTimers`: `timerID|timerData|timerID|timerData...`
 
-`itemID` and `itemValue` are all the item IDs that are persistent and their value.
+::: warning
+Due to a bug, if the level has no persistent items, `persTimers` will not be preceded by `@`.
+:::
 
-`timerID` and `timerData` is the same for timers, but `timerData` stores more than just the timer value as it contains a bunch of timer settings, separated by `&`. The values are:
+`itemID` and `itemValue` are all the item IDs that are persistent and their value. Only non-zero items are included.
+
+`timerID` and `timerData` is the same for timers, but `timerData` stores more than just the timer value as it contains a bunch of timer settings, separated by `&`. Only triggered timers are included. The data is:
 
 `timerID&timerValue&running&timeMod&ignoreTimewarp&stopTime&stopTimeEnabled&targetGroupID&runtimeID&controlID&paused&remaps`
 
@@ -109,3 +114,5 @@ These values represent the state of persistent item IDs and triggers at the star
 `remaps` have the following format: `remapID_remapID_...remapID_-triggerRuntimeID`.
 
 On level load, spawn remaps are converted into a dictionary and added to a global array, its position in the array is then saved in a field on the spawn trigger as `remapID`. When a trigger spawns a group the remap chain stores it's remap index if present and it's `triggerRuntimeID` if it's the first `remapID` added.
+
+Item Pers data string is empty if both parts would be empty.
