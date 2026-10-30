@@ -8,13 +8,11 @@ The replay string is a feature first added in 1.6, removed in 2.200 and re-added
 
 Currently, it is only used for local levels, with it being stored on the client in keys `k34`, `k119` and `k120` and sent to the servers via [uploadGJLevel21.php](/endpoints/levels/uploadGJLevel21)'s `lrs` parameter.
 
-It is separated into 2 sections with a `#` character: the inputs and the metadata
+It is separated into 2 sections with a `#` character: the inputs and the metadata.
 
 ## Inputs
 
-The inputs are a list of click/release actions, separated by `;`.
-
-Each input has a half-step value, which is the amount of 240 TPS half-steps (or 480 TPS steps) that have passed since any previous input. The number is negative if the input is being released.
+The inputs are a list of click/release actions, separated by `;`. Each input has a half-step value, which is the amount of 240 TPS half-steps (or 480 TPS steps) that have passed since any previous input. The number is negative if the input is being released.
 
 Note that half-steps are used even if Click Between Steps is disabled.
 
@@ -39,20 +37,20 @@ All input types other than P1 jump include a `,` after the value and the ID of t
 
 Here are some input examples:
 
-- `460` - P1 jump pressed down 460 half-steps after the previous input
-- `-120` - P1 jump released 120 half-steps after the previous input
-- `340,7` - P2 left pressed down 340 half-steps after the previous input
-- `-60,3` - P1 right released 60 half-steps after the previous input
+- `460` - P1 jump pressed down 460 half-steps after the previous input.
+- `-120` - P1 jump released 120 half-steps after the previous input.
+- `340,7` - P2 left pressed down 340 half-steps after the previous input.
+- `-60,3` - P1 right released 60 half-steps after the previous input.
 
-Actions can store optional metadata, the action key and the metadata are separated by `:` when metadata is present. Currently only checkpoints store metadata.
+Actions can store optional metadata. The action key and the metadata are separated by `:` when metadata is present. Currently only checkpoints store metadata.
 
-## Checkpoint Data
+### Checkpoint Data
 
 Checkpoint actions (`98` and `99`) store their metadata as a list of key/value pairs separated by `,`, with a trailing `,`.
 
 `-step,99:1,seed,2,id,3,attempt,4,ticks,5,clicks,6,points,7,time,8,itemPersData,`
 
-Unlike other inputs, the step value of a checkpoint action is the current half-step when the checkpoint is activated, rather than the amount since the previous input, the inputs after checkpont count from that step. Checkpoint actions are always written as released, so the value starts with a `-`.
+Unlike other inputs, the step value of a checkpoint action is the absolute half-step when the checkpoint is activated, rather than the amount since the previous input. The next input counts half-steps from the checkpoint action. Checkpoint actions are always written as released, so the value starts with a `-`.
 
 | Key | Name           | Type                                  | Description                                                                                |
 | --- | -------------- | ------------------------------------- | ------------------------------------------------------------------------------------------ |
@@ -95,21 +93,19 @@ These values represent the state of persistent item IDs and triggers at the star
 
 `timerID&timerValue&running&timeMod&ignoreTimewarp&stopTime&stopTimeEnabled&targetGroupID&runtimeID&controlID&paused&remaps`
 
-- `timerID` is the timer ID
-- `timerValue` is the value the timer is at
-- `running` is 0 if the timer is paused, 1 otherwise
-- `timeMod` is the value the time is multipled by (the TimeMod value in the Time trigger)
-- `ignoreTimewarp` is 1 if Ignore TimeWarp is enabled, 0 otherwise
-- `stopTime` is the value at which the timer will stop
-- `stopTimeEnabled` is 1 if the Stop Time is enabled, 0 otherwise
-- `targetGroupID` is the group ID that is set to spawn when the timer hits StopTime
-- `runtimeID` is the runtime ID of the trigger that initialized the timer
-- `controlID` is the timer's control ID
-- `paused` whether the timer is paused by a Stop trigger
-- `remaps` is the timer's serialized remap chain
+- `timerID` is the timer ID.
+- `timerValue` is the value the timer is at.
+- `running` is 0 if the timer is paused, 1 otherwise.
+- `timeMod` is the value the time is multipled by (the TimeMod value in the Time trigger).
+- `ignoreTimewarp` is 1 if Ignore TimeWarp is enabled, 0 otherwise.
+- `stopTime` is the value at which the timer will stop.
+- `stopTimeEnabled` is 1 if the Stop Time is enabled, 0 otherwise.
+- `targetGroupID` is the group ID that is set to spawn when the timer hits StopTime.
+- `runtimeID` is the runtime ID of the trigger that initialized the timer.
+- `controlID` is the timer's control ID.
+- `paused` whether the timer is paused by a Stop trigger.
+- `remaps` is the timer's serialized remap chain.
 
-`remaps` have the following format:
-
-`remapID_remapID_...remapID_-triggerRuntimeID`
+`remaps` have the following format: `remapID_remapID_...remapID_-triggerRuntimeID`.
 
 On level load, spawn remaps are converted into a dictionary and added to a global array, its position in the array is then saved in a field on the spawn trigger as `remapID`. When a trigger spawns a group the remap chain stores it's remap index if present and it's `triggerRuntimeID` if it's the first `remapID` added.
