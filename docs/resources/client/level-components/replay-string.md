@@ -77,7 +77,7 @@ The replay metadata is comparatively simple. It's a list of 6 values separated b
 - Attempts is NOT the total amount of attempts, just the amount of attempts the replay took.
 - gameVersion and binaryVersion are the same as [what the game sends](/endpoints/generic#common-parameters) to the servers.
 - levelVersion is the level's version at the time of the replay.
-- The itemPersData stores information about item and timer IDs that have been made persistent with the Item Pers trigger.
+- The itemPersData stores state of persistent items and timers on the replayed attempt.
 
 ## Item Pers Data
 
