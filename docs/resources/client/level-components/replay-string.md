@@ -60,16 +60,16 @@ Unlike other inputs, the step value of a checkpoint action is the absolute half-
 | 4   | Ticks          | **integer**                           | Half-steps played so far, increases by 2 every step                                        |
 | 5   | Clicks         | **integer**                           | Button presses so far                                                                      |
 | 6   | Points         | **integer**                           | Points collected so far                                                                    |
-| 7   | Time           | **integer**                           | Time played so far in seconds, multiplied by `100000` and rounded                          |
+| 7   | Time           | **integer**                           | Time played so far, in units of 10<sup>-5</sup> seconds (10μs), rounded to the nearest integer (e.g. `635833` = 6.35833 seconds) |
 | 8   | Item Pers Data | **[Item Pers Data](#item-pers-data)** | The state of persistent items and timers at the respawn                                    |
 
-Ticks, clicks and time are only reset when the level is restarted from the beginning, so they count the whole run across respawns.
+Ticks, clicks and time are only reset when the level is restarted from the beginning ("Full Restart", Ctrl+R), so they count the whole run across respawns.
 
 When the player respawns from a checkpoint, every input recorded after the checkpoint's step is removed before the `99` action is added, so the replay only contains the inputs of the path that continued. Inputs before the last `98` action are never removed.
 
 ## Metadata
 
-The metadata is comparatively simple. It's a list of 6 values separated by `,`. The values are:
+The replay metadata is comparatively simple. It's a list of 6 values separated by `,`. The values are:
 
 `randomSeed,attempts,gameVersion,binaryVersion,levelVersion,itemPersData`
 
@@ -101,7 +101,7 @@ These values represent the state of persistent item IDs and triggers at the star
 - `stopTime` is the value at which the timer will stop.
 - `stopTimeEnabled` is 1 if the Stop Time is enabled, 0 otherwise.
 - `targetGroupID` is the group ID that is set to spawn when the timer hits StopTime.
-- `runtimeID` is the runtime ID of the trigger that initialized the timer.
+- `runtimeID` is the internal runtime ID of the trigger that initialized the timer.
 - `controlID` is the timer's control ID.
 - `paused` whether the timer is paused by a Stop trigger.
 - `remaps` is the timer's serialized remap chain.
