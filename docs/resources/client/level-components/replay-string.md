@@ -34,7 +34,7 @@ All input types other than P1 jump include a `,` after the value and the ID of t
 | 8   | P2 Right           |                                    |
 | 9   | P2 Action 4        | unused                             |
 | 10  | P2 Action 5        | unused                             |
-| 98  | Checkpoint Load    | when loaded from a platformer save |
+| 98  | Checkpoint Load    | when loaded from a platformer save; unused |
 | 99  | Checkpoint Respawn | when respawning from a checkpoint  |
 
 Here are some input examples:
