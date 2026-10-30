@@ -55,7 +55,7 @@ Unlike other inputs, the step value of a checkpoint action is the absolute half-
 | Key | Name           | Type                                  | Description                                                                                |
 | --- | -------------- | ------------------------------------- | ------------------------------------------------------------------------------------------ |
 | 1   | Random Seed    | **integer**                           | The seed used for random triggers on the attempt that started from this checkpoint         |
-| 2   | Checkpoint ID  | **integer**                           | Counter that increases with every checkpoint action. Ignored on load, a new ID is assigned |
+| 2   | Checkpoint ID  | **integer**                           | Counter that increases with every checkpoint action |
 | 3   | Attempt        | **integer**                           | The attempt number shown in the "Attempt" label                                            |
 | 4   | Ticks          | **integer**                           | Half-steps played so far, increases by 2 every step                                        |
 | 5   | Clicks         | **integer**                           | Button presses so far                                                                      |
