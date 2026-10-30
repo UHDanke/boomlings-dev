@@ -101,7 +101,7 @@ Due to a bug, if the level has no persistent items, `persTimers` will not be pre
 - `timerID` is the timer ID.
 - `timerValue` is the value the timer is at.
 - `running` is 0 if the timer is paused, 1 otherwise.
-- `timeMod` is the value the time is multipled by (the TimeMod value in the Time trigger).
+- `timeMod` is the value the time is multipled by.
 - `ignoreTimewarp` is 1 if Ignore TimeWarp is enabled, 0 otherwise.
 - `stopTime` is the value at which the timer will stop.
 - `stopTimeEnabled` is 1 if the Stop Time is enabled, 0 otherwise.
