@@ -43,7 +43,7 @@ Epic Stock Media,https://epicstockmedia.com;Cyberwave Orchestra,https://cyberwav
 
 ## Changelog
 
-This is a base64 encoded string listing all sfx library changelogs, when decoded each entry is separated by `$` in the following format:
+This is a base64-encoded string listing all sfx library changelogs. When decoded, each entry is separated by `$` and has the following format:
 
 `{version},{timestamp},{highest_sfx_id}:{changes}`
 
@@ -51,4 +51,4 @@ Changes are encoded in the following format:
 
 `{path}~{change_count};{path}~{change_count}...`
 
-Where path is the updated sfx folder's path string.
+where `path` is the updated sfx folder's path string.

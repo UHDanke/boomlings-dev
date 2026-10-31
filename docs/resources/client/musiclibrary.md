@@ -73,7 +73,7 @@ All tags as of version `117`:
 
 ## Changelog
 
-This is a base64 encoded string listing all song library changelogs, when decoded each entry is separated by `$` in the following format:
+This is a base64-encoded string listing all song library changelogs. When decoded, each entry is separated by `$` and has the following format:
 
 `{version},{timestamp},{highest_song_id}:{changes}`
 
@@ -81,7 +81,7 @@ Changes are encoded in the following format:
 
 `{artist_id}~{tags}~{change_count};{artist_id}~{tags}~{change_count}...`
 
-Tags are dot-separated tag ids like in the case of songs.
+Tags are dot-separated tag ids.
 
 ## External Links
 
@@ -89,8 +89,8 @@ Both artist and song external link strings use the same formatting:
 
 `{source_id},{link_type},{custom_title},{url};{source_id},{link_type},{custom_title},{url}...`
 
-- source_id is artist / song id
-- link type is an int that maps platforms:
+- `source_id` is artist / song id
+- `link_type` is an int that maps platforms:
   - YOUTUBE = 1
   - NEWGROUNDS = 2
   - SOUNDCLOUD = 3
@@ -105,4 +105,4 @@ Both artist and song external link strings use the same formatting:
   - DISCORD = 12
   - TIKTOK = 13
   - ITCH_IO = 14
-- custom_title is the link button's custom title, defaults to the platform title if unused
+- `custom_title` is the link button's custom title, defaults to the platform title if unused
