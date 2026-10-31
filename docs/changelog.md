@@ -49,6 +49,7 @@ aside: true
 - CCGamemanager GLM now [tracks](#) timely levels for both the user and the server
 - 30(?) new [game variables](#)
 - New [`gdlvl`](#) format for transferring local levels
+- musiclibrary.dat and sfxlibrary.dat now have changelogs, listing paths and their change counts. Music library also stores song links and artist links.
 
 ## 2.2082
 
