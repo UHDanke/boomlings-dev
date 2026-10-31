@@ -32,7 +32,7 @@ All input types other than P1 jump include a `,` after the value and the ID of t
 | 8   | P2 Right           |                                    |
 | 9   | P2 Action 4        | unused                             |
 | 10  | P2 Action 5        | unused                             |
-| 98  | Checkpoint Load    | when loaded from a platformer save; unused |
+| 98  | Checkpoint Load    | related to platformer saves; unused |
 | 99  | Checkpoint Respawn | when respawning from a checkpoint  |
 
 Here are some input examples:
@@ -65,7 +65,7 @@ Unlike other inputs, the step value of a checkpoint action is the absolute half-
 
 Ticks, clicks and time are only reset when the level is restarted from the beginning ("Full Restart", Ctrl+R), so they count the whole run across respawns.
 
-When the player respawns from a checkpoint, every input recorded after the checkpoint's step is removed before the `99` action is added, so the replay only contains the inputs of the path that continued. Inputs before the last `98` action are never removed.
+When the player respawns from a checkpoint, every input recorded after the checkpoint's step is removed before the `99` action is added, so the replay only contains the inputs of the path that continued.
 
 ## Metadata
 
